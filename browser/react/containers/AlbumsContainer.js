@@ -1,8 +1,26 @@
-import React, {Component} from 'react';
-import store from '../store';
+import {connect} from 'react-redux';
 import Albums from '../components/Albums';
 
-export default class extends Component {
+const mapStateToProps = function (state, ownProps) {
+  return {
+    albums: state.albums.list
+  };
+};
+
+const mapDispatchToProps = function (dispatch, ownProps) {
+  return {  };
+};
+
+const AlbumContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Albums);
+
+export default AlbumContainer;
+
+
+
+/* export default class extends Component {
 
   constructor() {
     super();
@@ -23,4 +41,4 @@ export default class extends Component {
     return <Albums albums={this.state.list}/>;
   }
 
-}
+}*/

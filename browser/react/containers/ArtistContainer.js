@@ -1,38 +1,25 @@
-import React, {Component} from 'react';
-import store from '../store';
+import {connect} from 'react-redux';
 import Artist from '../components/Artist';
-
 import {toggleSong} from '../action-creators/player';
 
-export default class extends Component {
+const mapStateToProps = function (state, ownProps) {
+  return {
+      selectedArtist: state.artists.selected,
+      children: state.children
+  };
+};
 
-  constructor() {
-    super();
-    this.state = store.getState();
-  }
+const mapDispatchToProps = function (dispatch, ownProps) {
+  return {
+      toggleSong: function (song, list) {
+          dispatch(toggleSong(song, list));
+      }
+  };
+};
 
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => {
-      this.setState(store.getState());
-    });
-  }
+const ArtistContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Artist);
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  toggle(song, list) {
-    store.dispatch(toggleSong(song, list));
-  }
-
-  render() {
-    return (
-      <Artist
-        {...this.state.player}
-        selectedArtist={this.state.artists.selected}
-        toggleOne={this.toggle}
-        children={this.props.children} />
-    );
-  }
-
-}
+export default ArtistContainer;
